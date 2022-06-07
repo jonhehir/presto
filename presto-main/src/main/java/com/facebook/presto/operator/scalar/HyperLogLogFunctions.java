@@ -16,6 +16,7 @@ package com.facebook.presto.operator.scalar;
 import com.facebook.airlift.stats.cardinality.HyperLogLog;
 import com.facebook.presto.common.block.Block;
 import com.facebook.presto.common.type.StandardTypes;
+import com.facebook.presto.operator.aggregation.PrivateHyperLogLogEstimator;
 import com.facebook.presto.spi.function.Description;
 import com.facebook.presto.spi.function.ScalarFunction;
 import com.facebook.presto.spi.function.SqlNullable;
@@ -85,5 +86,14 @@ public final class HyperLogLogFunctions
         }
 
         return merged.serialize();
+    }
+
+    @ScalarFunction
+    @Description("compute the cardinality of a HyperLogLog instance under differential privacy")
+    @SqlType(StandardTypes.BIGINT)
+    public static long privateCardinality(@SqlType(StandardTypes.HYPER_LOG_LOG) Slice serializedHll, @SqlType(StandardTypes.DOUBLE) double epsilon)
+    {
+        PrivateHyperLogLogEstimator est = new PrivateHyperLogLogEstimator(HyperLogLog.newInstance(serializedHll));
+        return est.cardinality(epsilon);
     }
 }
