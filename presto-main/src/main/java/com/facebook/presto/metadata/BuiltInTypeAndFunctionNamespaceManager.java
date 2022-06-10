@@ -148,6 +148,7 @@ import com.facebook.presto.operator.scalar.MapValues;
 import com.facebook.presto.operator.scalar.MathFunctions;
 import com.facebook.presto.operator.scalar.MathFunctions.LegacyLogFunction;
 import com.facebook.presto.operator.scalar.MultimapFromEntriesFunction;
+import com.facebook.presto.operator.scalar.PrivateLpcaSketchFunctions;
 import com.facebook.presto.operator.scalar.QuantileDigestFunctions;
 import com.facebook.presto.operator.scalar.Re2JRegexpFunctions;
 import com.facebook.presto.operator.scalar.Re2JRegexpReplaceLambdaFunction;
@@ -216,6 +217,7 @@ import com.facebook.presto.type.IpPrefixOperators;
 import com.facebook.presto.type.LikeFunctions;
 import com.facebook.presto.type.LongEnumOperators;
 import com.facebook.presto.type.MapParametricType;
+import com.facebook.presto.type.PrivateLpcaSketchOperators;
 import com.facebook.presto.type.QuantileDigestOperators;
 import com.facebook.presto.type.RealOperators;
 import com.facebook.presto.type.SmallintOperators;
@@ -275,6 +277,7 @@ import static com.facebook.presto.common.type.HyperLogLogType.HYPER_LOG_LOG;
 import static com.facebook.presto.common.type.IntegerType.INTEGER;
 import static com.facebook.presto.common.type.JsonType.JSON;
 import static com.facebook.presto.common.type.P4HyperLogLogType.P4_HYPER_LOG_LOG;
+import static com.facebook.presto.common.type.PrivateLpcaSketchType.PRIVATE_LPCA_SKETCH;
 import static com.facebook.presto.common.type.QuantileDigestParametricType.QDIGEST;
 import static com.facebook.presto.common.type.RealType.REAL;
 import static com.facebook.presto.common.type.SmallintType.SMALLINT;
@@ -574,6 +577,7 @@ public class BuiltInTypeAndFunctionNamespaceManager
         addType(SET_DIGEST);
         addType(K_HYPER_LOG_LOG);
         addType(P4_HYPER_LOG_LOG);
+        addType(PRIVATE_LPCA_SKETCH);
         addType(JONI_REGEXP);
         addType(RE2J_REGEXP);
         addType(LIKE_PATTERN);
@@ -685,6 +689,7 @@ public class BuiltInTypeAndFunctionNamespaceManager
                 .scalars(ColorOperators.class)
                 .scalar(ColorOperators.ColorDistinctFromOperator.class)
                 .scalars(HyperLogLogFunctions.class)
+                .scalars(PrivateLpcaSketchFunctions.class)
                 .scalars(QuantileDigestFunctions.class)
                 .scalars(UnknownOperators.class)
                 .scalar(UnknownOperators.UnknownDistinctFromOperator.class)
@@ -722,6 +727,7 @@ public class BuiltInTypeAndFunctionNamespaceManager
                 .scalar(TimestampWithTimeZoneOperators.TimestampWithTimeZoneDistinctFromOperator.class)
                 .scalars(DateTimeOperators.class)
                 .scalars(HyperLogLogOperators.class)
+                .scalars(PrivateLpcaSketchOperators.class)
                 .scalars(QuantileDigestOperators.class)
                 .scalars(IpAddressOperators.class)
                 .scalar(IpAddressOperators.IpAddressDistinctFromOperator.class)

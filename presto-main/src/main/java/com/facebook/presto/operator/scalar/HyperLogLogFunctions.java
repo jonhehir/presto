@@ -18,6 +18,7 @@ import com.facebook.presto.common.block.Block;
 import com.facebook.presto.common.type.StandardTypes;
 import com.facebook.presto.spi.function.Description;
 import com.facebook.presto.spi.function.ScalarFunction;
+import com.facebook.presto.spi.function.SqlFunctionVisibility;
 import com.facebook.presto.spi.function.SqlNullable;
 import com.facebook.presto.spi.function.SqlType;
 import io.airlift.slice.Slice;
@@ -51,6 +52,17 @@ public final class HyperLogLogFunctions
     public static Slice emptyApproxSet(@SqlType(StandardTypes.DOUBLE) double maxStandardError)
     {
         return HyperLogLog.newInstance(standardErrorToBuckets(maxStandardError)).serialize();
+    }
+
+    @ScalarFunction(deterministic = false, visibility = SqlFunctionVisibility.EXPERIMENTAL)
+    @Description("compute a private cardinality for a HyperLogLog instance")
+    @SqlType(StandardTypes.BIGINT)
+    public static long privateCardinality(@SqlType(StandardTypes.HYPER_LOG_LOG) Slice serializedHll,
+            @SqlType(StandardTypes.DOUBLE) double epsilonThreshold,
+            @SqlType(StandardTypes.DOUBLE) double epsilonRandomizedResponse)
+    {
+        // At present, this is just an alias for cardinality(privatize_hll(serialized_hll, epsilonT, epsilonRR)).
+        return PrivateLpcaSketchFunctions.cardinality(PrivateLpcaSketchFunctions.privatizeHll(serializedHll, epsilonThreshold, epsilonRandomizedResponse));
     }
 
     @ScalarFunction("merge_hll")

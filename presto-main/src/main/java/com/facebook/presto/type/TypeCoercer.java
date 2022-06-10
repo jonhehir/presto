@@ -153,6 +153,7 @@ public class TypeCoercer
                     case StandardTypes.HYPER_LOG_LOG:
                     case SetDigestType.NAME:
                     case StandardTypes.P4_HYPER_LOG_LOG:
+                    case StandardTypes.PRIVATE_LPCA_SKETCH:
                     case StandardTypes.JSON:
                     case StandardTypes.INTERVAL_YEAR_TO_MONTH:
                     case StandardTypes.INTERVAL_DAY_TO_SECOND:
